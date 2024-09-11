@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NotifyScreen: View {
     
+    var okButtonDidTap: (() -> Void)
+    
     var body: some View {
         ZStack {
             Image("notification_screen-background")
@@ -40,6 +42,7 @@ struct NotifyScreen: View {
                                 .padding(.horizontal, 10)
                             
                             Button {
+                                okButtonDidTap()
                                 print("Show alert")
                             } label: {
                                 ZStack {

@@ -11,6 +11,7 @@ import SwiftUI
 struct BeenEarthApp: App {
     
     @State var didTapOkButton: Bool = false
+    @State var didTapOkButtonInNotifyScreen: Bool = false
     
     var body: some Scene {
         
@@ -20,8 +21,16 @@ struct BeenEarthApp: App {
                     didTapOkButton = true
                 }
             } else {
-                NotifyScreen()
+                if !didTapOkButtonInNotifyScreen {
+                    NotifyScreen() {
+                        didTapOkButtonInNotifyScreen = true
+                    }
+                } else {
+                    MainScreenView()
+                }
             }
         }
     }
 }
+
+

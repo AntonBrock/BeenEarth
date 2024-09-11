@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451BDD8E2C919C2400A34328 /* MainScreenView.swift */; };
 		45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D26CBE2C91694900417A0B /* BeenEarthApp.swift */; };
 		45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D26CC02C91694900417A0B /* WelcomeBoardView.swift */; };
 		45D26CC32C91694B00417A0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45D26CC22C91694B00417A0B /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		451BDD8E2C919C2400A34328 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		45D26CBB2C91694900417A0B /* BeenEarth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeenEarth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D26CBE2C91694900417A0B /* BeenEarthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeenEarthApp.swift; sourceTree = "<group>"; };
 		45D26CC02C91694900417A0B /* WelcomeBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeBoardView.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 		45D26CD02C91699000417A0B /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				451BDD8E2C919C2400A34328 /* MainScreenView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */,
+				451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */,
 				45D26CD62C91718900417A0B /* Color+Extenstions.swift in Sources */,
 				45D26CD92C9173FC00417A0B /* NotifyScreen.swift in Sources */,
 				45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */,
