@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="launcher_background_icon" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1SR-wh-vYo">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launcher_element_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Gr8-jt-ldj">
+                                <rect key="frame" x="121.66666666666669" y="351" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="8ki-bL-HWM"/>
+                                    <constraint firstAttribute="width" constant="150" id="DRe-yp-1hS"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="1SR-wh-vYo" secondAttribute="trailing" id="GEO-y2-xBb"/>
+                            <constraint firstItem="1SR-wh-vYo" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="PSJ-uQ-a5V"/>
+                            <constraint firstItem="1SR-wh-vYo" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="an3-gI-oWY"/>
+                            <constraint firstAttribute="bottom" secondItem="1SR-wh-vYo" secondAttribute="bottom" id="jcz-Cr-Dxk"/>
+                            <constraint firstItem="Gr8-jt-ldj" firstAttribute="centerX" secondItem="1SR-wh-vYo" secondAttribute="centerX" id="jf7-Wh-VpO"/>
+                            <constraint firstItem="Gr8-jt-ldj" firstAttribute="centerY" secondItem="1SR-wh-vYo" secondAttribute="centerY" id="xsA-CV-guE"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="launcher_background_icon" width="1560" height="3376"/>
+        <image name="launcher_element_icon" width="600" height="600"/>
+    </resources>
+</document>
