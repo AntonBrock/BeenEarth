@@ -20,13 +20,16 @@ struct BeenEarthApp: App {
                 WelcomeBoardView() {
                     didTapOkButton = true
                 }
+                .preferredColorScheme(.light)
             } else {
                 if !didTapOkButtonInNotifyScreen {
                     NotifyScreen() {
                         didTapOkButtonInNotifyScreen = true
                     }
+                    .preferredColorScheme(.light)
                 } else {
                     MainScreenView()
+                        .preferredColorScheme(.light)
                 }
             }
         }

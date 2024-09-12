@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451BDD8E2C919C2400A34328 /* MainScreenView.swift */; };
+		45743B1C2C92C357004C90A3 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45743B1B2C92C357004C90A3 /* ProfileView.swift */; };
+		45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45743B1E2C92C400004C90A3 /* FeedbackView.swift */; };
+		45743B222C92C50C004C90A3 /* CustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 45743B212C92C50C004C90A3 /* CustomTextField */; };
 		45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D26CBE2C91694900417A0B /* BeenEarthApp.swift */; };
 		45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D26CC02C91694900417A0B /* WelcomeBoardView.swift */; };
 		45D26CC32C91694B00417A0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45D26CC22C91694B00417A0B /* Assets.xcassets */; };
@@ -19,6 +22,8 @@
 
 /* Begin PBXFileReference section */
 		451BDD8E2C919C2400A34328 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
+		45743B1B2C92C357004C90A3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		45743B1E2C92C400004C90A3 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		45D26CBB2C91694900417A0B /* BeenEarth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeenEarth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D26CBE2C91694900417A0B /* BeenEarthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeenEarthApp.swift; sourceTree = "<group>"; };
 		45D26CC02C91694900417A0B /* WelcomeBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeBoardView.swift; sourceTree = "<group>"; };
@@ -34,12 +39,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45743B222C92C50C004C90A3 /* CustomTextField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45743B1A2C92C34D004C90A3 /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				45743B1B2C92C357004C90A3 /* ProfileView.swift */,
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		45743B1D2C92C3F9004C90A3 /* FeedbackView */ = {
+			isa = PBXGroup;
+			children = (
+				45743B1E2C92C400004C90A3 /* FeedbackView.swift */,
+			);
+			path = FeedbackView;
+			sourceTree = "<group>";
+		};
 		45D26CB22C91694900417A0B = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +128,8 @@
 		45D26CD02C91699000417A0B /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				45743B1D2C92C3F9004C90A3 /* FeedbackView */,
+				45743B1A2C92C34D004C90A3 /* ProfileView */,
 				451BDD8E2C919C2400A34328 /* MainScreenView.swift */,
 			);
 			path = Main;
@@ -151,6 +175,9 @@
 			dependencies = (
 			);
 			name = BeenEarth;
+			packageProductDependencies = (
+				45743B212C92C50C004C90A3 /* CustomTextField */,
+			);
 			productName = BeenEarth;
 			productReference = 45D26CBB2C91694900417A0B /* BeenEarth.app */;
 			productType = "com.apple.product-type.application";
@@ -179,6 +206,9 @@
 				Base,
 			);
 			mainGroup = 45D26CB22C91694900417A0B;
+			packageReferences = (
+				45743B202C92C50C004C90A3 /* XCRemoteSwiftPackageReference "SwiftUI-Custom-TextField" */,
+			);
 			productRefGroup = 45D26CBC2C91694900417A0B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -206,10 +236,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */,
 				45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */,
 				451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */,
 				45D26CD62C91718900417A0B /* Color+Extenstions.swift in Sources */,
 				45D26CD92C9173FC00417A0B /* NotifyScreen.swift in Sources */,
+				45743B1C2C92C357004C90A3 /* ProfileView.swift in Sources */,
 				45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,6 +462,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		45743B202C92C50C004C90A3 /* XCRemoteSwiftPackageReference "SwiftUI-Custom-TextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/esatgozcu/SwiftUI-Custom-TextField";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		45743B212C92C50C004C90A3 /* CustomTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45743B202C92C50C004C90A3 /* XCRemoteSwiftPackageReference "SwiftUI-Custom-TextField" */;
+			productName = CustomTextField;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 45D26CB32C91694900417A0B /* Project object */;
 }

@@ -1,0 +1,269 @@
+//
+//  ProfileView.swift
+//  BeenEarth
+//
+//  Created by ANTON DOBRYNIN on 12.09.2024.
+//
+
+import SwiftUI
+
+struct ProfileView: View {
+    var hideTabBar: (() -> Void)
+
+    @State var isEditingNameMode: Bool = false
+    @FocusState private var isTextFieldFocused: Bool
+    @State var name: String = "Your name"
+    
+    @State private var otherParams: [UIImage]?
+    @State private var selectedImage: UIImage?
+    @State private var showImagePicker: Bool = false
+    
+    @State private var isNeedToOpenProjects: Bool = false
+    @State private var isNeedToOpenFeedbackScreen: Bool = false
+    @State private var isNeedToOpenTermsScreen: Bool = false
+    @State private var isNeedToOpenPrivacy: Bool = false
+    
+    var body: some View {
+        NavigationView {
+            ScrollView(.vertical) {
+                VStack {
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .frame(width: 86, height: 86)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle().stroke(Color.white, lineWidth: 0)
+                            )
+                            .onTapGesture {
+                                showImagePicker.toggle()
+                            }
+                    } else {
+                        Image("empty-user-icon")
+                            .resizable()
+                            .frame(width: 110, height: 110)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle().stroke(Color(hex: "#2C85FF"), lineWidth: 2)
+                            )
+                            .onTapGesture {
+                                showImagePicker.toggle()
+                            }
+                    }
+                    
+                    HStack {
+                        if isEditingNameMode {
+                            TextField("Your name", text: $name, onEditingChanged: { editing in
+                                isEditingNameMode = editing
+                            }, onCommit: {
+                                isEditingNameMode = false
+                                isTextFieldFocused = false
+                                
+                                UserDefaults.standard.setValue(name, forKey: "UserName")
+                            })
+                            .frame(maxWidth: 300, alignment: .center)
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.black)
+                            .focused($isTextFieldFocused)
+                        } else {
+                            Text(name)
+                                .foregroundStyle(.black)
+                                .font(.system(size: 24, weight: .bold))
+                        }
+                        Button {
+                            isEditingNameMode.toggle()
+                            isTextFieldFocused.toggle()
+                            
+                            UserDefaults.standard.setValue(name, forKey: "UserName")
+                        } label: {
+//                            Image(isEditingNameMode ? "profile_save_ic" : "profile_edit_ic")
+                            Image("profile_edit_ic")
+                                .resizable()
+                                .frame(width: 18, height: 23)
+                        }
+                        
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 10)
+                    
+                    VStack(spacing: 19) {
+                        NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color(hex: "#EFEFEF"))
+                                .frame(height: 46)
+                                .overlay(alignment: .leading) {
+                                    HStack(spacing: 10) {
+                                        Image("mapsPoints-icon")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                        
+                                        Text("Map’s points")
+                                            .foregroundStyle(Color(hex: "#2C85FF"))
+                                            .font(.system(size: 16, weight: .bold))
+                                        
+                                        Spacer()
+                                        
+                                        Image("arrow-to_view")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                    }
+                                    .padding(.leading, 12)
+                                    .padding(.trailing, 9)
+                                    .padding(.vertical, 9)
+                                }
+                                .onTapGesture {
+                                    isNeedToOpenFeedbackScreen.toggle()
+                                }
+                        }
+
+                        NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color(hex: "#EFEFEF"))
+                                .frame(height: 46)
+                                .overlay(alignment: .leading) {
+                                    HStack(spacing: 10) {
+                                        Image("mapsStyle-icon")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                        
+                                        Text("Map style")
+                                            .foregroundStyle(Color(hex: "#2C85FF"))
+                                            .font(.system(size: 16, weight: .bold))
+
+                                        Spacer()
+                                        
+                                        Image("arrow-to_view")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                    }
+                                    .padding(.leading, 12)
+                                    .padding(.trailing, 9)
+                                    .padding(.vertical, 9)
+                                }
+                                .onTapGesture {
+                                    isNeedToOpenFeedbackScreen.toggle()
+                                }
+                        }
+
+                        NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color(hex: "#EFEFEF"))
+                                .frame(height: 46)
+                                .overlay(alignment: .leading) {
+                                    HStack(spacing: 10) {
+                                        Image("feedback-icon")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                        
+                                        Text("Fedback submissions")
+                                            .foregroundStyle(Color(hex: "#2C85FF"))
+                                            .font(.system(size: 16, weight: .bold))
+
+                                        Spacer()
+                                        
+                                        Image("arrow-to_view")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                    }
+                                    .padding(.leading, 12)
+                                    .padding(.trailing, 9)
+                                    .padding(.vertical, 9)
+                                }
+                                .onTapGesture {
+                                    isNeedToOpenFeedbackScreen.toggle()
+                                }
+                        }
+
+                        NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color(hex: "#EFEFEF"))
+                                .frame(height: 46)
+                                .overlay(alignment: .leading) {
+                                    HStack(spacing: 10) {
+                                        Image("terms-icon")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                        
+                                        Text("Terms and conditions")
+                                            .foregroundStyle(Color(hex: "#2C85FF"))
+                                            .font(.system(size: 16, weight: .bold))
+
+                                        Spacer()
+                                        
+                                        Image("arrow-to_view")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                    }
+                                    .padding(.leading, 12)
+                                    .padding(.trailing, 9)
+                                    .padding(.vertical, 9)
+                                }
+                                .onTapGesture {
+                                    isNeedToOpenFeedbackScreen.toggle()
+                                }
+                        }
+
+                        NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color(hex: "#EFEFEF"))
+                                .frame(height: 46)
+                                .overlay(alignment: .leading) {
+                                    HStack(spacing: 10) {
+                                        Image("policy-icon")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                        
+                                        Text("Privacy policy")
+                                            .foregroundStyle(Color(hex: "#2C85FF"))
+                                            .font(.system(size: 16, weight: .bold))
+
+                                        Spacer()
+                                        
+                                        Image("arrow-to_view")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                    }
+                                    .padding(.leading, 12)
+                                    .padding(.trailing, 9)
+                                    .padding(.vertical, 9)
+                                }
+                                .onTapGesture {
+                                    isNeedToOpenFeedbackScreen.toggle()
+                                }
+                        }
+
+                    }
+                    .padding(.top, 40)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .padding(.top, 40)
+                .padding(.horizontal, 45)
+            }
+                .background(.white)
+        }
+        .navigationTitle("Profile")
+        .navigationBarTitleDisplayMode(.inline)
+        .background(.white)
+        .onAppear {
+            if let name = UserDefaults.standard.string(forKey: "UserName") {
+                self.name = name
+            }
+            
+            loadImageFromUserDefaults()
+        }
+    }
+    
+    private func saveImageToUserDefaults() {
+        guard let selectedImage = selectedImage else { return }
+        if let imageData = selectedImage.pngData() {
+            UserDefaults.standard.set(imageData, forKey: "selectedImage")
+        }
+    }
+    
+    private func loadImageFromUserDefaults() {
+        if let imageData = UserDefaults.standard.data(forKey: "selectedImage"),
+           let image = UIImage(data: imageData) {
+            selectedImage = image
+        }
+    }
+}

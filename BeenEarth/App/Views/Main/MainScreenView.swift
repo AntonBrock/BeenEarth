@@ -13,70 +13,83 @@ struct MainScreenView: View {
     
     @State var globalMap = GlobeMapView()
     
+    @State private var isNeedToOpenProfileScreen: Bool = false
+    @State private var isNeedToOpenFeedbackScreen: Bool = false
+    
     var body: some View {
-        ZStack {
-            globalMap
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                HStack {
-                    Spacer()
-                    
-                    VStack(spacing: 24) {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 50, height: 50)
-                            .overlay {
-                                Button(action: {
-                                    print("Go to settings")
-                                }) {
-                                    Image("mainScreen-settings-icon")
-                                        .resizable()
-                                        .frame(width: 35, height: 35)
-                                        .background(Color.white)
-                                }
-                            }
-                        
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 50, height: 50)
-                            .overlay {
-                                Button(action: {
-                                    print("Change map style")
-                                }) {
-                                    Image("mainScreen-layers-icon")
-                                        .resizable()
-                                        .frame(width: 35, height: 35)
-                                        .background(Color.white)
-                                }
-                            }
-                    }
-                    .padding()
-                }
-                
-                Spacer()
+        NavigationView {
+            ZStack {
+                globalMap
+                    .edgesIgnoringSafeArea(.all)
                 
                 VStack {
                     HStack {
                         Spacer()
                         
-                        Button(action: {
-                            withAnimation {
-                                globalMap.resetCamera()
+                        VStack(spacing: 24) {
+                            NavigationLink(isActive: $isNeedToOpenProfileScreen) {
+                                ProfileView {
+                                    print("Hidden")
+                                }
+                            } label: {
+                                Circle()
+                                    .fill(.white)
+                                    .frame(width: 50, height: 50)
+                                    .overlay {
+                                        Image("mainScreen-settings-icon")
+                                            .resizable()
+                                            .frame(width: 35, height: 35)
+                                            .background(Color.white)
+                                    }
+                                    .onTapGesture {
+                                        isNeedToOpenProfileScreen.toggle()
+                                    }
                             }
-                        }) {
-                            Image("mainScreen-backToDefault-icon")
-                                .resizable()
-                                .frame(width: 50, height: 52)
+                            
+                            NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                                Circle()
+                                    .fill(.white)
+                                    .frame(width: 50, height: 50)
+                                    .overlay {
+                                        Image("mainScreen-layers-icon")
+                                            .resizable()
+                                            .frame(width: 35, height: 35)
+                                            .background(Color.white)
+                                    }
+                                    .onTapGesture {
+                                        isNeedToOpenFeedbackScreen.toggle()
+                                    }
+                            }
                         }
-                        .frame(width: 60, height: 60)
                     }
-                    .padding(.trailing, 15)
+                    .padding()
+                    
+                    Spacer()
+                    
+                    VStack {
+                        HStack {
+                            Spacer()
+                            
+                            Button(action: {
+                                withAnimation {
+                                    globalMap.resetCamera()
+                                }
+                            }) {
+                                Image("mainScreen-backToDefault-icon")
+                                    .resizable()
+                                    .frame(width: 50, height: 52)
+                            }
+                            .frame(width: 60, height: 60)
+                        }
+                        .padding(.trailing, 15)
+                    }
+                    
                 }
+                .padding(.top, 60)
+                .padding(.horizontal, 15)
             }
-            .padding(.top, 60)
-            .padding(.horizontal, 15)
         }
+        .tint(.black)
     }
 }
 
