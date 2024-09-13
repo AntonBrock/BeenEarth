@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451BDD8E2C919C2400A34328 /* MainScreenView.swift */; };
+		456D8AF42C94109B000096CC /* MapsPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456D8AF32C94109B000096CC /* MapsPointView.swift */; };
+		456D8AFA2C941712000096CC /* BottomSheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456D8AF92C941712000096CC /* BottomSheetContentView.swift */; };
+		456D8B002C941F22000096CC /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 456D8AFF2C941F22000096CC /* PopupView */; };
 		45743B1C2C92C357004C90A3 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45743B1B2C92C357004C90A3 /* ProfileView.swift */; };
 		45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45743B1E2C92C400004C90A3 /* FeedbackView.swift */; };
 		45743B222C92C50C004C90A3 /* CustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 45743B212C92C50C004C90A3 /* CustomTextField */; };
@@ -22,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		451BDD8E2C919C2400A34328 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
+		456D8AF32C94109B000096CC /* MapsPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsPointView.swift; sourceTree = "<group>"; };
+		456D8AF92C941712000096CC /* BottomSheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetContentView.swift; sourceTree = "<group>"; };
 		45743B1B2C92C357004C90A3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		45743B1E2C92C400004C90A3 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		45D26CBB2C91694900417A0B /* BeenEarth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeenEarth.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				456D8B002C941F22000096CC /* PopupView in Frameworks */,
 				45743B222C92C50C004C90A3 /* CustomTextField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,6 +52,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		456D8AF22C94108F000096CC /* MapsPointView */ = {
+			isa = PBXGroup;
+			children = (
+				456D8AF32C94109B000096CC /* MapsPointView.swift */,
+			);
+			path = MapsPointView;
+			sourceTree = "<group>";
+		};
+		456D8AF82C941706000096CC /* BottomSheetMapsStyleView */ = {
+			isa = PBXGroup;
+			children = (
+				456D8AF92C941712000096CC /* BottomSheetContentView.swift */,
+			);
+			path = BottomSheetMapsStyleView;
+			sourceTree = "<group>";
+		};
 		45743B1A2C92C34D004C90A3 /* ProfileView */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +133,7 @@
 		45D26CCD2C91697400417A0B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				456D8AF82C941706000096CC /* BottomSheetMapsStyleView */,
 				45D26CD72C9173F100417A0B /* NotifyScreen */,
 				45D26CD12C91699900417A0B /* WelcomeBoardView */,
 				45D26CD02C91699000417A0B /* Main */,
@@ -128,6 +151,7 @@
 		45D26CD02C91699000417A0B /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				456D8AF22C94108F000096CC /* MapsPointView */,
 				45743B1D2C92C3F9004C90A3 /* FeedbackView */,
 				45743B1A2C92C34D004C90A3 /* ProfileView */,
 				451BDD8E2C919C2400A34328 /* MainScreenView.swift */,
@@ -177,6 +201,7 @@
 			name = BeenEarth;
 			packageProductDependencies = (
 				45743B212C92C50C004C90A3 /* CustomTextField */,
+				456D8AFF2C941F22000096CC /* PopupView */,
 			);
 			productName = BeenEarth;
 			productReference = 45D26CBB2C91694900417A0B /* BeenEarth.app */;
@@ -208,6 +233,7 @@
 			mainGroup = 45D26CB22C91694900417A0B;
 			packageReferences = (
 				45743B202C92C50C004C90A3 /* XCRemoteSwiftPackageReference "SwiftUI-Custom-TextField" */,
+				456D8AFE2C941F22000096CC /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = 45D26CBC2C91694900417A0B /* Products */;
 			projectDirPath = "";
@@ -238,8 +264,10 @@
 			files = (
 				45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */,
 				45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */,
+				456D8AFA2C941712000096CC /* BottomSheetContentView.swift in Sources */,
 				451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */,
 				45D26CD62C91718900417A0B /* Color+Extenstions.swift in Sources */,
+				456D8AF42C94109B000096CC /* MapsPointView.swift in Sources */,
 				45D26CD92C9173FC00417A0B /* NotifyScreen.swift in Sources */,
 				45743B1C2C92C357004C90A3 /* ProfileView.swift in Sources */,
 				45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */,
@@ -464,6 +492,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		456D8AFE2C941F22000096CC /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
 		45743B202C92C50C004C90A3 /* XCRemoteSwiftPackageReference "SwiftUI-Custom-TextField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/esatgozcu/SwiftUI-Custom-TextField";
@@ -475,6 +511,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		456D8AFF2C941F22000096CC /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 456D8AFE2C941F22000096CC /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
+		};
 		45743B212C92C50C004C90A3 /* CustomTextField */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 45743B202C92C50C004C90A3 /* XCRemoteSwiftPackageReference "SwiftUI-Custom-TextField" */;
