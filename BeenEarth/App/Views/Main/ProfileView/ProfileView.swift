@@ -27,6 +27,7 @@ struct ProfileView: View {
     @State private var isNeedToOpenMapsPoints: Bool = false
     
     @State private var isNeedToOpenMapStyleBottomSheet: Bool = false
+    
     @State private var showInscriptions = true
     @State private var showCaps = true
     
@@ -151,7 +152,7 @@ struct ProfileView: View {
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    isNeedToOpenMapStyleBottomSheet.toggle()
+                                    isNeedToOpenMapStyleBottomSheet = true
                                 }
                             }
                     }
@@ -242,7 +243,7 @@ struct ProfileView: View {
                                 isNeedToOpenFeedbackScreen.toggle()
                             }
                     }
-
+                    
                 }
                 .padding(.top, 40)
             }
@@ -255,13 +256,19 @@ struct ProfileView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(.white)
         .popup(isPresented: $isNeedToOpenMapStyleBottomSheet) {
-            BottomSheetContentView(mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
-                .frame(height: 300)
+            BottomSheetContentView(dismiss: {
+                withAnimation {
+                    isNeedToOpenMapStyleBottomSheet = false
+                }
+            }, mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
+                .frame(maxWidth: .infinity, maxHeight: 300)
                 .cornerRadius(24)
                 .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: -5)
         } customize: {
             $0
-                .backgroundColor(Color(hex: "#E3E3E3"))
+                .type(.toast)
+                .position(.bottom)
+                .animation(.spring)
                 .closeOnTapOutside(true)
                 .closeOnTap(false)
         }

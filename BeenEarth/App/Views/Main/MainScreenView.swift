@@ -8,13 +8,25 @@
 import SwiftUI
 import MapKit
 import Foundation
+import PopupView
 
 struct MainScreenView: View {
     
     @State var globalMap = GlobeMapView()
-    
+    @State private var mapType: MKMapType = .standard
+
     @State private var isNeedToOpenProfileScreen: Bool = false
     @State private var isNeedToOpenFeedbackScreen: Bool = false
+    
+    @State private var isNeedToOpenMapStyleBottomSheet: Bool = false
+    
+    @State private var showInscriptions = true
+    @State private var showCaps = true
+    
+    @State private var isNeedToOpenTermsScreen: Bool = false
+    @State private var isNeedToOpenPrivacy: Bool = false
+    
+    @State private var isNeedToShowPoints: Bool = false
     
     var body: some View {
         NavigationView {
@@ -24,6 +36,27 @@ struct MainScreenView: View {
                 
                 VStack {
                     HStack {
+                        
+                        VStack {
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 50, height: 50)
+                                .overlay {
+                                    Image(!isNeedToShowPoints ? "mainScreen-hidePoint-icon" : "mainScreen-showPoint-icon")
+                                        .resizable()
+                                        .frame(width: 35, height: 35)
+                                        .background(Color.white)
+                                }
+                                .onTapGesture {
+                                    if !isNeedToShowPoints {
+                                        isNeedToShowPoints = true
+                                    } else {
+                                        isNeedToShowPoints = false
+                                    }
+                                }
+                        }
+                        
+                        
                         Spacer()
                         
                         VStack(spacing: 24) {
@@ -46,7 +79,7 @@ struct MainScreenView: View {
                                     }
                             }
                             
-                            NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                            VStack {
                                 Circle()
                                     .fill(.white)
                                     .frame(width: 50, height: 50)
@@ -57,7 +90,9 @@ struct MainScreenView: View {
                                             .background(Color.white)
                                     }
                                     .onTapGesture {
-                                        isNeedToOpenFeedbackScreen.toggle()
+                                        withAnimation {
+                                            isNeedToOpenMapStyleBottomSheet = true
+                                        }
                                     }
                             }
                         }
@@ -87,6 +122,23 @@ struct MainScreenView: View {
                 }
                 .padding(.top, 60)
                 .padding(.horizontal, 15)
+            }
+            .popup(isPresented: $isNeedToOpenMapStyleBottomSheet) {
+                BottomSheetContentView(dismiss: {
+                    withAnimation {
+                        isNeedToOpenMapStyleBottomSheet = false
+                    }
+                }, mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
+                    .frame(maxWidth: .infinity, maxHeight: 300)
+                    .cornerRadius(24)
+                    .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: -5)
+            } customize: {
+                $0
+                    .type(.toast)
+                    .position(.bottom)
+                    .animation(.spring)
+                    .closeOnTapOutside(true)
+                    .closeOnTap(false)
             }
         }
         .tint(.black)
