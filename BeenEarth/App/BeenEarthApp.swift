@@ -13,7 +13,9 @@ struct BeenEarthApp: App {
     @State var didTapOkButton: Bool = false
     @State var didTapOkButtonInNotifyScreen: Bool = false
     
-    #warning("TODO: НЕ ЗАБЫТЬ ВЕРНУТЬ")
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    
+#warning("TODO: НЕ ЗАБЫТЬ ВЕРНУТЬ")
     @State var hidedLaunch: Bool = true //false
     
     var body: some Scene {
@@ -32,14 +34,18 @@ struct BeenEarthApp: App {
                     .preferredColorScheme(.dark)
                 }
             } else {
-                if !didTapOkButtonInNotifyScreen {
-                    NotifyScreen() {
-                        didTapOkButtonInNotifyScreen = true
-                    }
-                    .preferredColorScheme(.light)
-                } else {
-                    MainScreenView()
+                if hasSeenOnboarding {
+                    if !didTapOkButtonInNotifyScreen {
+                        NotifyScreen() {
+                            didTapOkButtonInNotifyScreen = true
+                        }
                         .preferredColorScheme(.light)
+                    } else {
+                        MainScreenView()
+                            .preferredColorScheme(.light)
+                    }
+                } else {
+                    OnboardingScreen()
                 }
             }
         }
