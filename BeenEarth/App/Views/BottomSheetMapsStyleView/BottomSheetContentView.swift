@@ -9,7 +9,9 @@ import SwiftUI
 import MapKit
 
 struct BottomSheetContentView: View {
+    
     var dismiss: (() -> Void)
+    var didChange: ((MapStyle) -> Void)
         
     @Binding var mapType: MKMapType
     @Binding var showInscriptions: Bool
@@ -18,13 +20,15 @@ struct BottomSheetContentView: View {
     @State var showSatellitePopover: Bool = false
     @State var showStreetPopover: Bool = false
     
-    @State var showSatellitePopoverInscriptions: Bool = false
+    @State var showSatellitePopoverSatellite: Bool = false
+    @State var showSatellitePopoverHybrid: Bool = false
+    @State var showSatellitePopoverFlyover: Bool = false
+
     @State var showSatellitePopoverCaps: Bool = false
     
     @State var showStreetPopoverInscriptions: Bool = false
     @State var showStreetPopoverCaps: Bool = false
 
-    
     var body: some View {
         ZStack {
             VStack {
@@ -125,14 +129,14 @@ struct BottomSheetContentView: View {
             if showSatellitePopover {
                 VStack {
                     HStack {
-                        if showSatellitePopoverInscriptions {
+                        if showSatellitePopoverSatellite {
                             Image("selected-icon")
                                 .resizable()
                                 .frame(width: 16, height: 16)
                         }
                         
-                        Text("Show inscriptions")
-                            .foregroundColor(showSatellitePopoverInscriptions ? Color(hex: "#2C85FF") : .black)
+                        Text("Satellite")
+                            .foregroundColor(showSatellitePopoverSatellite ? Color(hex: "#2C85FF") : .black)
                             .font(.system(size: 16, weight: .semibold))
 
                         Spacer()
@@ -141,7 +145,59 @@ struct BottomSheetContentView: View {
                     .padding(.horizontal, 10)
                     .padding(.bottom, 3)
                     .onTapGesture {
-                        showSatellitePopoverInscriptions.toggle()
+                        showSatellitePopoverSatellite = true
+                        showSatellitePopoverHybrid = false
+                        showSatellitePopoverFlyover = false
+                        
+                        didChange(.satellite)
+                    }
+                    
+                    HStack {
+                        if showSatellitePopoverHybrid {
+                            Image("selected-icon")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                        }
+                        
+                        Text("Hybrid")
+                            .foregroundColor(showSatellitePopoverHybrid ? Color(hex: "#2C85FF") : .black)
+                            .font(.system(size: 16, weight: .semibold))
+
+                        Spacer()
+                    }
+                    .padding(.top, 8)
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 3)
+                    .onTapGesture {
+                        showSatellitePopoverSatellite = false
+                        showSatellitePopoverHybrid = true
+                        showSatellitePopoverFlyover = false
+                        
+                        didChange(.hybrid)
+                    }
+                    
+                    HStack {
+                        if showSatellitePopoverFlyover {
+                            Image("selected-icon")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                        }
+                        
+                        Text("Hyybrid Flyover")
+                            .foregroundColor(showSatellitePopoverFlyover ? Color(hex: "#2C85FF") : .black)
+                            .font(.system(size: 16, weight: .semibold))
+
+                        Spacer()
+                    }
+                    .padding(.top, 8)
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 3)
+                    .onTapGesture {
+                        showSatellitePopoverSatellite = false
+                        showSatellitePopoverHybrid = false
+                        showSatellitePopoverFlyover = true
+                        
+                        didChange(.hybridFlyover)
                     }
                     
                     Divider()
@@ -169,7 +225,7 @@ struct BottomSheetContentView: View {
                 }
                 .background(Color(hex: "#B5B5B5"))
                 .cornerRadius(12)
-                .frame(width: 240, height: 50)
+                .frame(width: 240, height: 100)
                 .transition(.opacity)
                 .padding(.trailing, 20)
                 .padding(.top, -20)

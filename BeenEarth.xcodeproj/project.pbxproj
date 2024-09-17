@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451BDD8E2C919C2400A34328 /* MainScreenView.swift */; };
+		4535C7EB2C998B2A00533DCE /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535C7EA2C998B2A00533DCE /* LaunchScreen.swift */; };
 		456D8AF42C94109B000096CC /* MapsPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456D8AF32C94109B000096CC /* MapsPointView.swift */; };
 		456D8AFA2C941712000096CC /* BottomSheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456D8AF92C941712000096CC /* BottomSheetContentView.swift */; };
 		456D8B002C941F22000096CC /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 456D8AFF2C941F22000096CC /* PopupView */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		451BDD8E2C919C2400A34328 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
+		4535C7EA2C998B2A00533DCE /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		456D8AF32C94109B000096CC /* MapsPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsPointView.swift; sourceTree = "<group>"; };
 		456D8AF92C941712000096CC /* BottomSheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetContentView.swift; sourceTree = "<group>"; };
 		45743B1B2C92C357004C90A3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -52,6 +54,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4535C7E92C998B1E00533DCE /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				4535C7EA2C998B2A00533DCE /* LaunchScreen.swift */,
+			);
+			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
 		456D8AF22C94108F000096CC /* MapsPointView */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +143,7 @@
 		45D26CCD2C91697400417A0B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4535C7E92C998B1E00533DCE /* LaunchScreen */,
 				456D8AF82C941706000096CC /* BottomSheetMapsStyleView */,
 				45D26CD72C9173F100417A0B /* NotifyScreen */,
 				45D26CD12C91699900417A0B /* WelcomeBoardView */,
@@ -264,6 +275,7 @@
 			files = (
 				45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */,
 				45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */,
+				4535C7EB2C998B2A00533DCE /* LaunchScreen.swift in Sources */,
 				456D8AFA2C941712000096CC /* BottomSheetContentView.swift in Sources */,
 				451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */,
 				45D26CD62C91718900417A0B /* Color+Extenstions.swift in Sources */,

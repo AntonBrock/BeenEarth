@@ -13,14 +13,24 @@ struct BeenEarthApp: App {
     @State var didTapOkButton: Bool = false
     @State var didTapOkButtonInNotifyScreen: Bool = false
     
+    #warning("TODO: НЕ ЗАБЫТЬ ВЕРНУТЬ")
+    @State var hidedLaunch: Bool = true //false
+    
     var body: some Scene {
         
         WindowGroup {
             if !didTapOkButton {
-                WelcomeBoardView() {
-                    didTapOkButton = true
+                if hidedLaunch {
+                    WelcomeBoardView() {
+                        didTapOkButton = true
+                    }
+                    .preferredColorScheme(.light)
+                } else {
+                    LaunchScreen() {
+                        hidedLaunch = true
+                    }
+                    .preferredColorScheme(.dark)
                 }
-                .preferredColorScheme(.light)
             } else {
                 if !didTapOkButtonInNotifyScreen {
                     NotifyScreen() {

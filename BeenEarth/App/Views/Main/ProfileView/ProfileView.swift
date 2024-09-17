@@ -10,6 +10,8 @@ import MapKit
 import PopupView
 
 struct ProfileView: View {
+    @Environment(\.dismiss) var dismiss
+
     @State private var mapType: MKMapType = .standard
 
     var hideTabBar: (() -> Void)
@@ -80,6 +82,7 @@ struct ProfileView: View {
                             .foregroundStyle(.black)
                             .font(.system(size: 24, weight: .bold))
                     }
+                    
                     Button {
                         isEditingNameMode.toggle()
                         isTextFieldFocused.toggle()
@@ -97,7 +100,11 @@ struct ProfileView: View {
                 .padding(.top, 10)
                 
                 VStack(spacing: 19) {
-                    NavigationLink(destination: MapsPointView(), isActive: $isNeedToOpenMapsPoints) {
+                    NavigationLink(destination: MapsPointView() {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            dismiss.callAsFunction()
+                        }
+                    }, isActive: $isNeedToOpenMapsPoints) {
                         RoundedRectangle(cornerRadius: 14)
                             .fill(Color(hex: "#EFEFEF"))
                             .frame(height: 46)
@@ -259,6 +266,15 @@ struct ProfileView: View {
             BottomSheetContentView(dismiss: {
                 withAnimation {
                     isNeedToOpenMapStyleBottomSheet = false
+                }
+            }, didChange: { mapStyle in
+                switch mapStyle {
+                case .satellite:
+                    print("satellite save")
+                case .hybrid:
+                    print("hybrid save")
+                case .hybridFlyover:
+                    print("hybridFlyover save")
                 }
             }, mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
                 .frame(maxWidth: .infinity, maxHeight: 300)
