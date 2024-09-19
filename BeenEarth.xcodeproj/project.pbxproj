@@ -49,6 +49,8 @@
 		45D26CD22C916D7700417A0B /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		45D26CD52C91718900417A0B /* Color+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extenstions.swift"; sourceTree = "<group>"; };
 		45D26CD82C9173FC00417A0B /* NotifyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyScreen.swift; sourceTree = "<group>"; };
+		45DAD68A2C9C579E0045D450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		45DAD68B2C9C57B00045D450 /* BeenEarth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BeenEarth.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,8 @@
 		45D26CBD2C91694900417A0B /* BeenEarth */ = {
 			isa = PBXGroup;
 			children = (
+				45DAD68B2C9C57B00045D450 /* BeenEarth.entitlements */,
+				45DAD68A2C9C579E0045D450 /* Info.plist */,
 				45D26CCC2C91696500417A0B /* App */,
 				45D26CC22C91694B00417A0B /* Assets.xcassets */,
 				45D26CC42C91694B00417A0B /* Preview Content */,
@@ -449,13 +453,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BeenEarth/BeenEarth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BeenEarth/Preview Content\"";
 				DEVELOPMENT_TEAM = L6QZ8MR9Z8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeenEarth/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Been Earth 3D";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "In order to improve your experience with the app and collect internal metrics such as: clicks, screen views, number of tags you have created - we ask you for permission to collect data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -485,13 +492,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BeenEarth/BeenEarth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BeenEarth/Preview Content\"";
 				DEVELOPMENT_TEAM = L6QZ8MR9Z8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeenEarth/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Been Earth 3D";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "In order to improve your experience with the app and collect internal metrics such as: clicks, screen views, number of tags you have created - we ask you for permission to collect data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

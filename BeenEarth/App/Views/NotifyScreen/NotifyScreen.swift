@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import AppTrackingTransparency
 
 struct NotifyScreen: View {
     
     var okButtonDidTap: (() -> Void)
+    
+    @AppStorage("hasEnablePushNotification") private var hasEnablePushNotification = false
+    
+    @State var isNeedToShowCross: Bool = false
     
     var body: some View {
         ZStack {
@@ -42,8 +47,20 @@ struct NotifyScreen: View {
                                 .padding(.horizontal, 10)
                             
                             Button {
-                                okButtonDidTap()
-                                print("Show alert")
+                                
+                                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                                    
+                                    if granted {
+                                        DispatchQueue.main.async {
+                                            UIApplication.shared.registerForRemoteNotifications()
+                                            hasEnablePushNotification = true
+                                            
+                                            okButtonDidTap()
+                                        }
+                                    } else {
+                                        okButtonDidTap()
+                                    }                                    
+                                }
                             } label: {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
@@ -79,6 +96,25 @@ struct NotifyScreen: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .padding(.top, 93)
+                    
+                    VStack {
+                        Image("close-icon_white")
+                            .resizable()
+                            .frame(width: 39, height: 39)
+                            .opacity(isNeedToShowCross ? 1 : 0)
+                            .onTapGesture {
+                                hasEnablePushNotification = false
+                                okButtonDidTap()
+                            }
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                                    isNeedToShowCross = true
+                                }
+                            }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(.top, 53)
+                    .padding(.trailing, 20)
                     
                     Spacer()
                 }
