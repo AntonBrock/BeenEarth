@@ -91,9 +91,22 @@ struct MainScreenView: View {
                         VStack(spacing: 24) {
                             NavigationLink(isActive: $isNeedToOpenProfileScreen) {
                                 ProfileView {
-                                    print("Hidden")
-                                } needToShowPointInTheMap: { point in
+                                    withAnimation {
+                                        globalMap.mapView.removeAnnotations(globalMap.mapView.annotations)
+                                    }
                                     
+                                    savedCoordinates.removeAll()
+                                    loadCoordinates()
+                                                                        
+                                    if !savedCoordinates.isEmpty {
+                                        globalMap.savedCoordinats = savedCoordinates
+                                        savedCoordinates.forEach { point in
+                                            let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+                                            globalMap.addAnnotation(coordinate: coordinate, title: point.name)
+                                        }
+                                    }
+                                }
+                                needToShowPointInTheMap: { point in
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                         let location = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
                                         
@@ -145,7 +158,6 @@ struct MainScreenView: View {
                                 
                             }
                             .onTapGesture {
-                                #warning("TODO: Проложить путь до точки")
                                 print("Попап про будущий функционал")
                                 
                             }
@@ -375,7 +387,6 @@ struct MainScreenView: View {
                                     }
                                     
                                     globalMap.mapView.removeAnnotations(annotationsToRemove)
-                                    
                                     updateSavedPoints()
                                 }
                                 
@@ -430,19 +441,6 @@ struct MainScreenView: View {
         }
         .navigationViewStyle(.stack)
         .tint(.black)
-        .onChange(of: userDefaultsObserver.changeDetected) { value in
-            print(value)
-//            if value {
-//                                
-//                loadCoordinates()
-//                
-//                savedCoordinates.forEach { point in
-//                    let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
-//                    globalMap.addAnnotation(coordinate: coordinate, title: point.name)
-//                }
-////                isWasHiddenScreen = false
-//            }
-        }
         .onAppear {
             globalMap.needToShowCreatedPointPopup = { coordinate, title in
                 self.isNeedToShowPopupAboutCreatePoint = false
@@ -543,6 +541,13 @@ struct MainScreenView: View {
     private func loadCoordinates() {
         if let savedData = UserDefaults.standard.array(forKey: "savedCoordinatesWithNames") as? [[String: Any]] {
             
+            if savedData.isEmpty {
+                savedCoordinates = []
+                
+                globalMap.mapView.removeAnnotations(globalMap.mapView.annotations)
+                return
+            }
+            
             savedData.forEach { point in
                 guard let name = point["name"] as? String else {
                     return
@@ -557,7 +562,6 @@ struct MainScreenView: View {
                 }
                 
                 let point: MapPoint = MapPoint(name: name, latitude: latitude, longitude: longitude)
-                
                 savedCoordinates.append(point)
             }
         }

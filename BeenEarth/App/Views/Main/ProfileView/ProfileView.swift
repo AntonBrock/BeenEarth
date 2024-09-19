@@ -13,8 +13,8 @@ struct ProfileView: View {
     @Environment(\.dismiss) var dismiss
 
     @State private var mapType: MKMapType = .standard
-
-    var hideTabBar: (() -> Void)
+    
+    var willDismiss: (() -> Void)
     var needToShowPointInTheMap: ((MapPoint) -> Void)
 
     @State var isEditingNameMode: Bool = false
@@ -286,6 +286,9 @@ struct ProfileView: View {
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
         .background(.white)
+        .onDisappear {
+            willDismiss()
+        }
         .sheet(isPresented: $showImagePicker) {
             PhotoPicker(selectedImages: $otherParams, selectedImage: $selectedImage, countForSelected: 1) {
                 self.selectedImage = selectedImage
