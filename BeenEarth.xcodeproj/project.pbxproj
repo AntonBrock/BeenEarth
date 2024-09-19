@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451BDD8E2C919C2400A34328 /* MainScreenView.swift */; };
+		453285B32C9C0CA600B4E2BD /* WebViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453285B22C9C0CA600B4E2BD /* WebViewRepresentable.swift */; };
+		453285B52C9C0CCA00B4E2BD /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453285B42C9C0CCA00B4E2BD /* WebView.swift */; };
+		453285B72C9C1E2200B4E2BD /* UserDefaultsOvservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453285B62C9C1E2200B4E2BD /* UserDefaultsOvservable.swift */; };
 		4535C7EB2C998B2A00533DCE /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535C7EA2C998B2A00533DCE /* LaunchScreen.swift */; };
 		4535C7EE2C9991C400533DCE /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535C7ED2C9991C400533DCE /* OnboardingScreen.swift */; };
 		456D8AF42C94109B000096CC /* MapsPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456D8AF32C94109B000096CC /* MapsPointView.swift */; };
@@ -16,6 +19,7 @@
 		45743B1C2C92C357004C90A3 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45743B1B2C92C357004C90A3 /* ProfileView.swift */; };
 		45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45743B1E2C92C400004C90A3 /* FeedbackView.swift */; };
 		45743B222C92C50C004C90A3 /* CustomTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 45743B212C92C50C004C90A3 /* CustomTextField */; };
+		4586B5F52C9C076900111ADA /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4586B5F42C9C076900111ADA /* PhotoPicker.swift */; };
 		45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D26CBE2C91694900417A0B /* BeenEarthApp.swift */; };
 		45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D26CC02C91694900417A0B /* WelcomeBoardView.swift */; };
 		45D26CC32C91694B00417A0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45D26CC22C91694B00417A0B /* Assets.xcassets */; };
@@ -27,12 +31,16 @@
 
 /* Begin PBXFileReference section */
 		451BDD8E2C919C2400A34328 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
+		453285B22C9C0CA600B4E2BD /* WebViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewRepresentable.swift; sourceTree = "<group>"; };
+		453285B42C9C0CCA00B4E2BD /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		453285B62C9C1E2200B4E2BD /* UserDefaultsOvservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsOvservable.swift; sourceTree = "<group>"; };
 		4535C7EA2C998B2A00533DCE /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		4535C7ED2C9991C400533DCE /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
 		456D8AF32C94109B000096CC /* MapsPointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsPointView.swift; sourceTree = "<group>"; };
 		456D8AF92C941712000096CC /* BottomSheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetContentView.swift; sourceTree = "<group>"; };
 		45743B1B2C92C357004C90A3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		45743B1E2C92C400004C90A3 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
+		4586B5F42C9C076900111ADA /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		45D26CBB2C91694900417A0B /* BeenEarth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeenEarth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D26CBE2C91694900417A0B /* BeenEarthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeenEarthApp.swift; sourceTree = "<group>"; };
 		45D26CC02C91694900417A0B /* WelcomeBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeBoardView.swift; sourceTree = "<group>"; };
@@ -104,6 +112,17 @@
 			path = FeedbackView;
 			sourceTree = "<group>";
 		};
+		4586B5F32C9C076100111ADA /* Entiry */ = {
+			isa = PBXGroup;
+			children = (
+				4586B5F42C9C076900111ADA /* PhotoPicker.swift */,
+				453285B22C9C0CA600B4E2BD /* WebViewRepresentable.swift */,
+				453285B42C9C0CCA00B4E2BD /* WebView.swift */,
+				453285B62C9C1E2200B4E2BD /* UserDefaultsOvservable.swift */,
+			);
+			path = Entiry;
+			sourceTree = "<group>";
+		};
 		45D26CB22C91694900417A0B = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +172,7 @@
 		45D26CCD2C91697400417A0B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4586B5F32C9C076100111ADA /* Entiry */,
 				4535C7EC2C9991B900533DCE /* OnboardingScreen */,
 				4535C7E92C998B1E00533DCE /* LaunchScreen */,
 				456D8AF82C941706000096CC /* BottomSheetMapsStyleView */,
@@ -286,15 +306,19 @@
 			files = (
 				4535C7EE2C9991C400533DCE /* OnboardingScreen.swift in Sources */,
 				45743B1F2C92C400004C90A3 /* FeedbackView.swift in Sources */,
+				453285B32C9C0CA600B4E2BD /* WebViewRepresentable.swift in Sources */,
 				45D26CC12C91694900417A0B /* WelcomeBoardView.swift in Sources */,
 				4535C7EB2C998B2A00533DCE /* LaunchScreen.swift in Sources */,
 				456D8AFA2C941712000096CC /* BottomSheetContentView.swift in Sources */,
 				451BDD8F2C919C2400A34328 /* MainScreenView.swift in Sources */,
 				45D26CD62C91718900417A0B /* Color+Extenstions.swift in Sources */,
+				453285B72C9C1E2200B4E2BD /* UserDefaultsOvservable.swift in Sources */,
 				456D8AF42C94109B000096CC /* MapsPointView.swift in Sources */,
+				4586B5F52C9C076900111ADA /* PhotoPicker.swift in Sources */,
 				45D26CD92C9173FC00417A0B /* NotifyScreen.swift in Sources */,
 				45743B1C2C92C357004C90A3 /* ProfileView.swift in Sources */,
 				45D26CBF2C91694900417A0B /* BeenEarthApp.swift in Sources */,
+				453285B52C9C0CCA00B4E2BD /* WebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

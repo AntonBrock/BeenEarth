@@ -14,6 +14,8 @@ struct MapsPointView: View {
     @State private var savedCoordinates: [MapPoint] = []
     
     var needDismissProfile: (() -> Void)
+    var needToShowPointInTheMap: ((MapPoint) -> Void)
+    
     @State var didDismissByButton: Bool = false
     @State var editingModeEnable: Bool = false
     
@@ -46,7 +48,12 @@ struct MapsPointView: View {
                                     .padding(.trailing, 10)
                                     .animation(.linear)
                                     .transition(.opacity)
-                                
+                                    .onTapGesture {
+                                        if let pointIndex = savedCoordinates.firstIndex(where: { $0.id == point.id }) {
+                                            savedCoordinates.remove(at: pointIndex)                                            
+                                            updateSavedPoints()
+                                        }
+                                    }
                             }
                             
                             RoundedRectangle(cornerRadius: 14)
@@ -67,6 +74,10 @@ struct MapsPointView: View {
                                     .padding(.leading, 18)
                                     .padding(.trailing, 9)
                                     .padding(.vertical, 9)
+                                    .onTapGesture {
+                                        needToShowPointInTheMap(point)
+                                        dismiss.callAsFunction()
+                                    }
                                 }
                         }
                     }
@@ -89,6 +100,22 @@ struct MapsPointView: View {
                     needDismissProfile()
                 }
             }
+    }
+    
+    private func updateSavedPoints() {        
+        if !savedCoordinates.isEmpty {
+            savedCoordinates.forEach { coordinate in
+                let point = [
+                    "name": coordinate.name,
+                    "latitude": coordinate.latitude,
+                    "longitude": coordinate.longitude
+                ] as [String : Any]
+                
+                UserDefaults.standard.set([point], forKey: "savedCoordinatesWithNames")
+            }
+        } else {
+            UserDefaults.standard.set([], forKey: "savedCoordinatesWithNames")
+        }
     }
     
     @ViewBuilder

@@ -15,6 +15,7 @@ struct ProfileView: View {
     @State private var mapType: MKMapType = .standard
 
     var hideTabBar: (() -> Void)
+    var needToShowPointInTheMap: ((MapPoint) -> Void)
 
     @State var isEditingNameMode: Bool = false
     @FocusState private var isTextFieldFocused: Bool
@@ -28,6 +29,9 @@ struct ProfileView: View {
     @State private var isNeedToOpenFeedbackScreen: Bool = false
     @State private var isNeedToOpenMapsPoints: Bool = false
     
+    @State private var isTermsWebViewActive: Bool = false
+    @State private var isPolicyWebViewActive: Bool = false
+
     @State private var isNeedToOpenMapStyleBottomSheet: Bool = false
     
     @State private var showInscriptions = true
@@ -42,17 +46,6 @@ struct ProfileView: View {
                 if let selectedImage = selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
-                        .frame(width: 86, height: 86)
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle().stroke(Color.white, lineWidth: 0)
-                        )
-                        .onTapGesture {
-                            showImagePicker.toggle()
-                        }
-                } else {
-                    Image("empty-user-icon")
-                        .resizable()
                         .frame(width: 110, height: 110)
                         .clipShape(Circle())
                         .overlay(
@@ -61,6 +54,26 @@ struct ProfileView: View {
                         .onTapGesture {
                             showImagePicker.toggle()
                         }
+                } else {
+                    ZStack {
+                        Image("empty-user-icon")
+                            .resizable()
+                            .frame(width: 110, height: 110)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle().stroke(Color(hex: "#2C85FF"), lineWidth: 2)
+                            )
+                            .onTapGesture {
+                                showImagePicker.toggle()
+                            }
+                        
+                        Image("profile_empty-ic")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .onTapGesture {
+                                showImagePicker.toggle()
+                            }
+                    }
                 }
                 
                 HStack {
@@ -73,7 +86,7 @@ struct ProfileView: View {
                             
                             UserDefaults.standard.setValue(name, forKey: "UserName")
                         })
-                        .frame(maxWidth: 300, alignment: .center)
+                        .frame(maxWidth: 200, alignment: .center)
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.black)
                         .focused($isTextFieldFocused)
@@ -89,18 +102,25 @@ struct ProfileView: View {
                         
                         UserDefaults.standard.setValue(name, forKey: "UserName")
                     } label: {
-//                            Image(isEditingNameMode ? "profile_save_ic" : "profile_edit_ic")
-                        Image("profile_edit_ic")
+                        Image(isEditingNameMode ? "profile_edit-done-ic" : "profile_edit_ic")
                             .resizable()
-                            .frame(width: 18, height: 23)
-                    }
-                    
+                            .frame(width: isEditingNameMode ? 14 : 18, height: isEditingNameMode ? 12 : 23)
+                    }                    
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 10)
                 
                 VStack(spacing: 19) {
                     NavigationLink(destination: MapsPointView() {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            dismiss.callAsFunction()
+                        }
+                    } needToShowPointInTheMap: { point in
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                            needToShowPointInTheMap(point)
+                        }
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             dismiss.callAsFunction()
                         }
@@ -193,7 +213,9 @@ struct ProfileView: View {
                             }
                     }
 
-                    NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                    NavigationLink(destination: WebViewScreen(link: "https://sites.google.com/view/3d-journey-planet/terms-of-use",
+                                                              navTitle: "Terms and conditions"),
+                                   isActive: $isTermsWebViewActive) {
                         RoundedRectangle(cornerRadius: 14)
                             .fill(Color(hex: "#EFEFEF"))
                             .frame(height: 46)
@@ -218,11 +240,13 @@ struct ProfileView: View {
                                 .padding(.vertical, 9)
                             }
                             .onTapGesture {
-                                isNeedToOpenFeedbackScreen.toggle()
+                                isTermsWebViewActive = true
                             }
                     }
 
-                    NavigationLink(destination: FeedbackView(), isActive: $isNeedToOpenFeedbackScreen) {
+                    NavigationLink(destination: WebViewScreen(link: "https://sites.google.com/view/3d-journey-planet/privacy-policy",
+                                                              navTitle: "Privacy policy"),
+                                   isActive: $isPolicyWebViewActive) {
                         RoundedRectangle(cornerRadius: 14)
                             .fill(Color(hex: "#EFEFEF"))
                             .frame(height: 46)
@@ -247,7 +271,7 @@ struct ProfileView: View {
                                 .padding(.vertical, 9)
                             }
                             .onTapGesture {
-                                isNeedToOpenFeedbackScreen.toggle()
+                                isPolicyWebViewActive = true
                             }
                     }
                     
@@ -262,6 +286,19 @@ struct ProfileView: View {
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
         .background(.white)
+        .sheet(isPresented: $showImagePicker) {
+            PhotoPicker(selectedImages: $otherParams, selectedImage: $selectedImage, countForSelected: 1) {
+                self.selectedImage = selectedImage
+                saveImageToUserDefaults()
+            }
+        }
+        .onAppear {
+            if let name = UserDefaults.standard.string(forKey: "UserName") {
+                self.name = name
+            }
+            
+            loadImageFromUserDefaults()
+        }
         .popup(isPresented: $isNeedToOpenMapStyleBottomSheet) {
             BottomSheetContentView(dismiss: {
                 withAnimation {

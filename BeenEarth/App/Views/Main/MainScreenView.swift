@@ -9,6 +9,7 @@ import SwiftUI
 import MapKit
 import Foundation
 import PopupView
+import CoreLocation
 
 enum MapStyle {
     case satellite
@@ -25,6 +26,9 @@ struct MapPoint: Identifiable {
 
 struct MainScreenView: View {
     @State var globalMap = GlobeMapView()
+    @StateObject private var userDefaultsObserver = UserDefaultsObserver()
+    
+    @Environment(\.scenePhase) var scenePhase
 
     @State private var mapType: MKMapType = .satelliteFlyover
     @State private var mapStyle: MapStyle = .satellite
@@ -40,18 +44,18 @@ struct MainScreenView: View {
     @State private var isNeedToOpenTermsScreen: Bool = false
     @State private var isNeedToOpenPrivacy: Bool = false
     
-    @State private var isNeedToShowPoints: Bool = false
+    @State private var isNeedToShowPoints: Bool = true
     @State private var isNeedToShowPopupAboutCreatePoint: Bool = false
-    
+    @State private var isNeedToShowPopupWithPoint: Bool = false
     
     @State private var focusedPointName: String = "Name of a point"
     @State var isEditingFocusedPointMode: Bool = false
-    @FocusState private var isPointTextFieldFocused: Bool
     
+    @FocusState private var isPointTextFieldFocused: Bool
     @State private var foucesPointCoordinate: CLLocationCoordinate2D = .init(latitude: 0, longitude: 0)
     
     @State private var savedCoordinates: [MapPoint] = []
-    
+        
     var body: some View {
         NavigationView {
             ZStack {
@@ -74,12 +78,13 @@ struct MainScreenView: View {
                                 .onTapGesture {
                                     if !isNeedToShowPoints {
                                         isNeedToShowPoints = true
+                                        globalMap.hideAllAnnotations(on: globalMap.mapView, isHidden: false)
                                     } else {
                                         isNeedToShowPoints = false
+                                        globalMap.hideAllAnnotations(on: globalMap.mapView, isHidden: true)
                                     }
                                 }
                         }
-                        
                         
                         Spacer()
                         
@@ -87,6 +92,13 @@ struct MainScreenView: View {
                             NavigationLink(isActive: $isNeedToOpenProfileScreen) {
                                 ProfileView {
                                     print("Hidden")
+                                } needToShowPointInTheMap: { point in
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        let location = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+                                        
+                                        globalMap.animateToLocation(coordinate: location, withZoomLevel: 10000)
+                                    }
                                 }
                             } label: {
                                 Circle()
@@ -118,6 +130,24 @@ struct MainScreenView: View {
                                             isNeedToOpenMapStyleBottomSheet = true
                                         }
                                     }
+                            }
+                            
+                            VStack {
+                                Circle()
+                                    .fill(.white)
+                                    .frame(width: 50, height: 50)
+                                    .overlay {
+                                        Image("mainScreen-walking")
+                                            .resizable()
+                                            .frame(width: 35, height: 35)
+                                            .background(Color.white)
+                                    }
+                                
+                            }
+                            .onTapGesture {
+                                #warning("TODO: Проложить путь до точки")
+                                print("Попап про будущий функционал")
+                                
                             }
                         }
                     }
@@ -172,8 +202,6 @@ struct MainScreenView: View {
                             Button {
                                 isEditingFocusedPointMode.toggle()
                                 isPointTextFieldFocused.toggle()
-                                
-//                                UserDefaults.standard.setValue(name, forKey: "UserName")
                             } label: {
                                 Image("profile_edit_ic")
                                     .resizable()
@@ -234,10 +262,124 @@ struct MainScreenView: View {
                                 let newPoint = MapPoint(name: focusedPointName, latitude: foucesPointCoordinate.latitude, longitude: foucesPointCoordinate.longitude)
                                 
                                 saveCoordinate(newPoint) {
-                                    isNeedToShowPopupAboutCreatePoint.toggle()
-                                    
-                                    #warning("TODO: Нужно обновить карту и добавить точку")
+                                    focusedPointName = "Name of a point"
+                                    isNeedToShowPopupAboutCreatePoint = false
                                 }
+                            }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                .frame(width: 330, height: 105)
+                .background(.white)
+                .cornerRadius(15)
+            } customize: {
+                $0
+                    .type(.floater(verticalPadding: 50, horizontalPadding: 10, useSafeAreaInset: true))
+                    .position(.bottom)
+                    .animation(.spring)
+                    .closeOnTapOutside(true)
+                    .closeOnTap(false)
+            }
+            .popup(isPresented: $isNeedToShowPopupWithPoint) {
+                HStack {
+                    VStack {
+                        HStack {
+                            if isEditingFocusedPointMode {
+                                TextField("Name of a point", text: $focusedPointName, onEditingChanged: { editing in
+                                    isEditingFocusedPointMode = editing
+                                }, onCommit: {
+                                    isEditingFocusedPointMode = false
+                                    isPointTextFieldFocused = false
+                                })
+                                .frame(maxWidth: 150, alignment: .leading)
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.black)
+                                .focused($isPointTextFieldFocused)
+                            } else {
+                                Text(focusedPointName)
+                                    .frame(maxWidth: 150, alignment: .leading)
+                                    .foregroundStyle(.black)
+                                    .font(.system(size: 16, weight: .bold))
+                            }
+                            
+                            Button {
+                                isEditingFocusedPointMode.toggle()
+                                isPointTextFieldFocused.toggle()
+                            } label: {
+                                Image("profile_edit_ic")
+                                    .resizable()
+                                    .frame(width: 18, height: 23)
+                            }
+                            
+                        }
+                        
+                        VStack {
+                            Divider()
+                                .frame(width: 160)
+                                .padding(.top, -5)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text("Selected coordinates:")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(Color(hex: "#2C85FF"))
+                            .fixedSize()
+                            .font(.system(size: 14))
+                            .padding(.leading, -10)
+                        
+                        VStack {
+                            Text("latitude: \(foucesPointCoordinate.latitude)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.system(size: 14))
+
+                            Text("longtitude: \(foucesPointCoordinate.longitude)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.system(size: 14))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.leading, 10)
+                    .padding(.top, 15)
+                    .padding(.bottom, 10)
+
+                    Spacer()
+                    
+                    VStack {
+                        Image("mainScreen-closePoupAboutPoint-icon")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .padding(.leading, 40)
+                            .padding(.bottom, -10)
+                            .padding(.top, 15)
+                            .onTapGesture {
+                                isNeedToShowPopupWithPoint = false
+                                focusedPointName = "Name of a point"
+                                foucesPointCoordinate = .init(latitude: 0, longitude: 0)
+                            }
+                        
+                        Image("mainScreen-deletePoint-icon")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .padding(.trailing, 22)
+                            .padding(.bottom, 30)
+                            .onTapGesture {
+                                if let pointId = savedCoordinates.firstIndex(where: {
+                                    $0.latitude == foucesPointCoordinate.latitude && $0.longitude == foucesPointCoordinate.longitude
+                                }) {
+                                    savedCoordinates.remove(at: pointId)
+                                    
+                                    let annotationsToRemove = globalMap.mapView.annotations.filter { annotation in
+                                        let annotationCoordinate = annotation.coordinate
+                                        return annotationCoordinate.latitude == foucesPointCoordinate.latitude &&
+                                        annotationCoordinate.longitude == foucesPointCoordinate.longitude
+                                    }
+                                    
+                                    globalMap.mapView.removeAnnotations(annotationsToRemove)
+                                    
+                                    updateSavedPoints()
+                                }
+                                
+                                isNeedToShowPopupWithPoint = false
                             }
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
@@ -286,22 +428,52 @@ struct MainScreenView: View {
                     .closeOnTap(false)
             }
         }
+        .navigationViewStyle(.stack)
         .tint(.black)
+        .onChange(of: userDefaultsObserver.changeDetected) { value in
+            print(value)
+//            if value {
+//                                
+//                loadCoordinates()
+//                
+//                savedCoordinates.forEach { point in
+//                    let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+//                    globalMap.addAnnotation(coordinate: coordinate, title: point.name)
+//                }
+////                isWasHiddenScreen = false
+//            }
+        }
+        .onAppear {
+            globalMap.needToShowCreatedPointPopup = { coordinate, title in
+                self.isNeedToShowPopupAboutCreatePoint = false
+                
+                self.foucesPointCoordinate = coordinate
+                self.focusedPointName = title!
+                
+                withAnimation {
+                    isNeedToShowPopupWithPoint = true
+                }
+            }
+            
+            globalMap.needToShowPopup = { coordinate in
+                self.isNeedToShowPopupWithPoint = false
+                self.foucesPointCoordinate = coordinate
+                
+                withAnimation {
+                    isNeedToShowPopupAboutCreatePoint = true
+                }
+            }
+        }
         .onAppear {
             loadCoordinates()
             
             if !savedCoordinates.isEmpty {
-                print("\(savedCoordinates)")
-            }
-            
-            globalMap.needToShowPopup = { coordinate in
+                print(savedCoordinates)
                 
-                self.foucesPointCoordinate = coordinate
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    withAnimation {
-                        isNeedToShowPopupAboutCreatePoint = true
-                    }
+                globalMap.savedCoordinats = savedCoordinates
+                savedCoordinates.forEach { point in
+                    let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+                    globalMap.addAnnotation(coordinate: coordinate, title: point.name)
                 }
             }
         }
@@ -311,24 +483,66 @@ struct MainScreenView: View {
     // Сохранение координат в UserDefaults
     private func saveCoordinate(_ coordinate: MapPoint, completion: @escaping (() -> Void)) {
         savedCoordinates.append(coordinate)
+        saveToUserDefaults()
         
-        saveToUserDefaults(coordinate)
-        completion()
+        savedCoordinates.forEach { point in
+            let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+            
+            globalMap.addAnnotation(coordinate: coordinate, title: point.name)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                completion()
+            }
+        }
+    }
+    
+    // update
+    private func updateSavedPoints() {
+        if !savedCoordinates.isEmpty {
+            var pointOfArray = [[:]]
+
+            savedCoordinates.forEach { coordinate in
+                let point = [
+                    "name": coordinate.name,
+                    "latitude": coordinate.latitude,
+                    "longitude": coordinate.longitude
+                ] as [String : Any]
+                
+                pointOfArray.append(point)
+                UserDefaults.standard.set(pointOfArray, forKey: "savedCoordinatesWithNames")
+            }
+        } else {
+            UserDefaults.standard.set([], forKey: "savedCoordinatesWithNames")
+        }
+        
+        if !savedCoordinates.isEmpty {
+            savedCoordinates.forEach { point in
+                let coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+                globalMap.addAnnotation(coordinate: coordinate, title: point.name)
+            }
+        }
     }
     
     // Сериализация и сохранение в UserDefaults
-    private func saveToUserDefaults(_ coordinate: MapPoint) {
-        let point = [
-            "name": coordinate.name,
-            "latitude": coordinate.latitude,
-            "longitude": coordinate.longitude
-        ] as [String : Any]
+    private func saveToUserDefaults() {
         
-        UserDefaults.standard.set([point], forKey: "savedCoordinatesWithNames")
+        var pointOfArray = [[:]]
+        
+        savedCoordinates.forEach { point in
+            let point = [
+                "name": point.name,
+                "latitude": point.latitude,
+                "longitude": point.longitude
+            ] as [String : Any]
+            
+            pointOfArray.append(point)
+            UserDefaults.standard.set(pointOfArray, forKey: "savedCoordinatesWithNames")
+        }
     }
     
     private func loadCoordinates() {
         if let savedData = UserDefaults.standard.array(forKey: "savedCoordinatesWithNames") as? [[String: Any]] {
+            
             savedData.forEach { point in
                 guard let name = point["name"] as? String else {
                     return
@@ -343,6 +557,7 @@ struct MainScreenView: View {
                 }
                 
                 let point: MapPoint = MapPoint(name: name, latitude: latitude, longitude: longitude)
+                
                 savedCoordinates.append(point)
             }
         }
@@ -351,11 +566,14 @@ struct MainScreenView: View {
 
 
 struct GlobeMapView: UIViewRepresentable {
-    
+        
     var needToShowPopup: ((CLLocationCoordinate2D) -> Void)?
+    var needToShowCreatedPointPopup:  ((CLLocationCoordinate2D, String?) -> Void)?
     
     var mapType: MKMapType = .satelliteFlyover
     let mapView = MKMapView(frame: .zero)
+    
+    var savedCoordinats: [MapPoint] = []
     
     func makeUIView(context: Context) -> MKMapView {
         mapView.mapType = .satelliteFlyover
@@ -384,6 +602,12 @@ struct GlobeMapView: UIViewRepresentable {
             uiView.layoutIfNeeded()
         }
     }
+        
+    func animateToLocation(coordinate: CLLocationCoordinate2D, withZoomLevel zoomLevel: Double = 1000) {
+        let camera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: zoomLevel, pitch: mapView.camera.pitch, heading: mapView.camera.heading)
+        
+        mapView.setCamera(camera, animated: true)
+    }
     
     func resetCamera() {
         let camera = MKMapCamera()
@@ -394,14 +618,23 @@ struct GlobeMapView: UIViewRepresentable {
         mapView.setCamera(camera, animated: true)
     }
     
-//    func addAnnotation(coordinate: CLLocationCoordinate2D, title: String, subtitle: String) {
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = coordinate //CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194) // Пример: координаты Сан-Франциско
-//        annotation.title = title //"Сан-Франциско"
-//        annotation.subtitle = subtitle //"Пример метки на карте"
-//        
-//        mapView.addAnnotation(annotation)
-//    }
+    func addAnnotation(coordinate: CLLocationCoordinate2D, title: String) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = title
+        
+        DispatchQueue.main.async {
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
+    func hideAllAnnotations(on mapView: MKMapView, isHidden: Bool) {
+        for annotation in mapView.annotations {
+            if let annotationView = mapView.view(for: annotation) {
+                annotationView.isHidden = isHidden
+            }
+        }
+    }
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -418,16 +651,26 @@ struct GlobeMapView: UIViewRepresentable {
             let location = gesture.location(in: parent.mapView)
             let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
             
-            #warning("TODO: Сначала показать popup о создание, а уже потом создать метку")
-            
             parent.needToShowPopup?(coordinate)
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "Метка"
-            annotation.subtitle = "Широта: \(coordinate.latitude), Долгота: \(coordinate.longitude)"
-            
-//            parent.mapView.addAnnotation(annotation)
+        }
+        
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            if let annotation = view.annotation {
+                let title = annotation.title ?? ""
+                let coordinate = annotation.coordinate
+                
+                parent.needToShowCreatedPointPopup?(coordinate, title)
+            }
+        }
+        
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if let polyline = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(polyline: polyline)
+                renderer.strokeColor = .blue
+                renderer.lineWidth = 5.0
+                return renderer
+            }
+            return MKOverlayRenderer()
         }
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -442,7 +685,7 @@ struct GlobeMapView: UIViewRepresentable {
                     annotationView?.annotation = annotation
                 }
                 
-                annotationView?.image = UIImage(named: "maps-point-icon")?.resize(to: CGSize(width: 20, height: 20))
+                annotationView?.image = UIImage(named: "maps-point-icon")?.resize(to: CGSize(width: 25, height: 25))
                 
                 return annotationView
             }
