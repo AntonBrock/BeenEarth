@@ -313,6 +313,9 @@ struct ProfileView: View {
                     print("\(mapStyle) save")
                     self.mapType = .satellite
                     UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
+                case .standard:
+                    self.mapType = .standard
+                    UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                 case .hybrid:
                     print("\(mapStyle) save")
                     self.mapType = .hybrid
@@ -323,7 +326,7 @@ struct ProfileView: View {
                     UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                 }
             }, mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
-                .frame(maxWidth: .infinity, maxHeight: 300)
+                .frame(maxWidth: .infinity, maxHeight: 200)
                 .cornerRadius(24)
                 .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: -5)
         } customize: {
@@ -341,6 +344,10 @@ struct ProfileView: View {
                 self.mapType = .satellite
             }
             
+            if savedMapStyle == "standard" {
+                self.mapType = .standard
+            }
+ 
             if savedMapStyle == "hybrid" {
                 self.mapType = .hybrid
             }

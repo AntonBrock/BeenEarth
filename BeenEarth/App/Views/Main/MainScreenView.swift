@@ -15,6 +15,7 @@ enum MapStyle {
     case satellite
     case hybrid
     case hybridFlyover
+    case standard
 }
 
 struct MapPoint: Identifiable {
@@ -429,7 +430,10 @@ struct MainScreenView: View {
                         self.mapStyle = .satellite
                         self.mapType = .satellite
                         UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
-//                        self.mapType = .satelliteFlyover
+                    case .standard:
+                        self.mapStyle = .standard
+                        self.mapType = .standard
+                        UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                     case .hybrid:
                         self.mapStyle = .hybrid
                         self.mapType = .hybrid
@@ -442,7 +446,7 @@ struct MainScreenView: View {
                     
                     globalMap.mapType = self.mapType
                 }, mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
-                    .frame(maxWidth: .infinity, maxHeight: 300)
+                    .frame(maxWidth: .infinity, maxHeight: 200)
                     .cornerRadius(24)
                     .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: -5)
             } customize: {
@@ -463,6 +467,11 @@ struct MainScreenView: View {
             if savedMapStyle == "satellite" {
                 self.mapStyle = .satellite
                 self.mapType = .satellite
+            }
+            
+            if savedMapStyle == "standard" {
+                self.mapStyle = .standard
+                self.mapType = .standard
             }
             
             if savedMapStyle == "hybrid" {
