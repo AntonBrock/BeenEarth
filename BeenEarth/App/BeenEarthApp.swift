@@ -20,8 +20,7 @@ struct BeenEarthApp: App {
     @AppStorage("hasEnablePushNotification") private var hasEnablePushNotification = false
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     
-#warning("TODO: НЕ ЗАБЫТЬ ВЕРНУТЬ")
-    @State var hidedLaunch: Bool = true //false
+    @State var hidedLaunch: Bool = false
     
     var body: some Scene {
         WindowGroup {
