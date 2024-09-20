@@ -38,19 +38,27 @@ struct BeenEarthApp: App {
                 }
             } else {
                 if hasSeenOnboarding {
-                    if !hasEnablePushNotification {
-                        if !didTapOkButtonInNotifyScreen {
-                            NotifyScreen() {
-                                didTapOkButtonInNotifyScreen = true
+                    if !hidedLaunch {
+                        LaunchScreen() {
+                            hidedLaunch = true
+                        }
+                        .preferredColorScheme(.dark)
+                        
+                    } else {
+                        if !hasEnablePushNotification {
+                            if !didTapOkButtonInNotifyScreen {
+                                NotifyScreen() {
+                                    didTapOkButtonInNotifyScreen = true
+                                }
+                                .preferredColorScheme(.light)
+                            } else {
+                                MainScreenView()
+                                    .preferredColorScheme(.light)
                             }
-                            .preferredColorScheme(.light)
                         } else {
                             MainScreenView()
                                 .preferredColorScheme(.light)
                         }
-                    } else {
-                        MainScreenView()
-                            .preferredColorScheme(.light)
                     }
                 } else {
                     OnboardingScreen()
