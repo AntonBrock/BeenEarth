@@ -285,5 +285,39 @@ struct BottomSheetContentView: View {
                 .padding(.top, 50)
             }
         }
+        .onAppear {
+            let savedMapStyle = UserDefaults.standard.string(forKey: "savedMapStyle")
+
+            if savedMapStyle == "satellite" {
+                self.mapType = .satellite
+                showSatellitePopoverSatellite = true
+            }
+            
+            if savedMapStyle == "hybrid" {
+                self.mapType = .hybrid
+                showSatellitePopoverHybrid = true
+            }
+            
+            if savedMapStyle == "hybridFlyover" {
+                self.mapType = .hybridFlyover
+                showSatellitePopoverFlyover = true
+            }
+        }
+        .onChange(of: mapType) { newValue in
+            if newValue == .satellite {
+                showSatellitePopoverSatellite = true
+                UserDefaults.standard.set("satellite", forKey: "savedMapStyle")
+            }
+            
+            if newValue == .hybrid {
+                showSatellitePopoverHybrid = true
+                UserDefaults.standard.set("hybrid", forKey: "savedMapStyle")
+            }
+            
+            if newValue == .hybridFlyover {
+                showSatellitePopoverFlyover = true
+                UserDefaults.standard.set("hybridFlyover", forKey: "savedMapStyle")
+            }
+        }
     }
 }

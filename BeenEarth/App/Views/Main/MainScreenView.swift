@@ -91,6 +91,26 @@ struct MainScreenView: View {
                         VStack(spacing: 24) {
                             NavigationLink(isActive: $isNeedToOpenProfileScreen) {
                                 ProfileView {
+                                    
+                                    let savedMapStyle = UserDefaults.standard.string(forKey: "savedMapStyle")
+
+                                    if savedMapStyle == "satellite" {
+                                        self.mapStyle = .satellite
+                                        self.mapType = .satellite
+                                    }
+                                    
+                                    if savedMapStyle == "hybrid" {
+                                        self.mapStyle = .hybrid
+                                        self.mapType = .hybrid
+                                    }
+                                    
+                                    if savedMapStyle == "hybridFlyover" {
+                                        self.mapStyle = .hybridFlyover
+                                        self.mapType = .hybridFlyover
+                                    }
+                                    
+                                    globalMap.mapType = self.mapType
+                                    
                                     withAnimation {
                                         globalMap.mapView.removeAnnotations(globalMap.mapView.annotations)
                                     }
@@ -215,9 +235,10 @@ struct MainScreenView: View {
                                 isEditingFocusedPointMode.toggle()
                                 isPointTextFieldFocused.toggle()
                             } label: {
-                                Image("profile_edit_ic")
+                                Image(isEditingFocusedPointMode ? "profile_edit-done-ic" : "profile_edit_ic")
                                     .resizable()
-                                    .frame(width: 18, height: 23)
+                                    .frame(width: isEditingFocusedPointMode ? 14 : 18,
+                                           height: isEditingFocusedPointMode ? 12 : 23)
                             }
                             
                         }
@@ -406,13 +427,17 @@ struct MainScreenView: View {
                     switch mapStyle {
                     case .satellite:
                         self.mapStyle = .satellite
-                        self.mapType = .satelliteFlyover
+                        self.mapType = .satellite
+                        UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
+//                        self.mapType = .satelliteFlyover
                     case .hybrid:
                         self.mapStyle = .hybrid
                         self.mapType = .hybrid
+                        UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                     case .hybridFlyover:
                         self.mapStyle = .hybridFlyover
                         self.mapType = .hybridFlyover
+                        UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                     }
                     
                     globalMap.mapType = self.mapType
@@ -432,6 +457,26 @@ struct MainScreenView: View {
         .navigationViewStyle(.stack)
         .tint(.black)
         .onAppear {
+            
+            let savedMapStyle = UserDefaults.standard.string(forKey: "savedMapStyle")
+
+            if savedMapStyle == "satellite" {
+                self.mapStyle = .satellite
+                self.mapType = .satellite
+            }
+            
+            if savedMapStyle == "hybrid" {
+                self.mapStyle = .hybrid
+                self.mapType = .hybrid
+            }
+            
+            if savedMapStyle == "hybridFlyover" {
+                self.mapStyle = .hybridFlyover
+                self.mapType = .hybridFlyover
+            }
+            
+            globalMap.mapType = self.mapType
+            
             globalMap.needToShowCreatedPointPopup = { coordinate, title in
                 self.isNeedToShowPopupAboutCreatePoint = false
                 

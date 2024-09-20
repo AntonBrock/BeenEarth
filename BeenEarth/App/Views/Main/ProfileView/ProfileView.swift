@@ -13,7 +13,7 @@ struct ProfileView: View {
     @Environment(\.dismiss) var dismiss
 
     @State private var mapType: MKMapType = .standard
-    
+        
     var willDismiss: (() -> Void)
     var needToShowPointInTheMap: ((MapPoint) -> Void)
 
@@ -310,11 +310,17 @@ struct ProfileView: View {
             }, didChange: { mapStyle in
                 switch mapStyle {
                 case .satellite:
-                    print("satellite save")
+                    print("\(mapStyle) save")
+                    self.mapType = .satellite
+                    UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                 case .hybrid:
-                    print("hybrid save")
+                    print("\(mapStyle) save")
+                    self.mapType = .hybrid
+                    UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                 case .hybridFlyover:
-                    print("hybridFlyover save")
+                    print("\(mapStyle) save")
+                    self.mapType = .hybridFlyover
+                    UserDefaults.standard.set("\(mapStyle)", forKey: "savedMapStyle")
                 }
             }, mapType: $mapType, showInscriptions: $showInscriptions, showCaps: $showCaps)
                 .frame(maxWidth: .infinity, maxHeight: 300)
@@ -329,6 +335,20 @@ struct ProfileView: View {
                 .closeOnTap(false)
         }
         .onAppear {
+            let savedMapStyle = UserDefaults.standard.string(forKey: "savedMapStyle")
+
+            if savedMapStyle == "satellite" {
+                self.mapType = .satellite
+            }
+            
+            if savedMapStyle == "hybrid" {
+                self.mapType = .hybrid
+            }
+            
+            if savedMapStyle == "hybridFlyover" {
+                self.mapType = .hybridFlyover
+            }
+            
             if let name = UserDefaults.standard.string(forKey: "UserName") {
                 self.name = name
             }
