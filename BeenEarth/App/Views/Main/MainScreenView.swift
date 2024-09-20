@@ -65,7 +65,6 @@ struct MainScreenView: View {
                 
                 VStack {
                     HStack {
-                        
                         VStack {
                             Circle()
                                 .fill(.white)
@@ -276,16 +275,19 @@ struct MainScreenView: View {
                     Spacer()
                     
                     VStack {
-                        Image("mainScreen-closePoupAboutPoint-icon")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .padding(.leading, 40)
-                            .padding(.bottom, -10)
-                            .padding(.top, 15)
-                            .onTapGesture {
-                                isNeedToShowPopupAboutCreatePoint = false
-                                foucesPointCoordinate = .init(latitude: 0, longitude: 0)
-                            }
+                        VStack {
+                            Image("mainScreen-closePoupAboutPoint-icon")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .padding(.leading, 40)
+                                .padding(.bottom, -10)
+                                .padding(.top, 15)
+                        }
+                        .frame(width: 44, height: 44)
+                        .onTapGesture {
+                            isNeedToShowPopupAboutCreatePoint = false
+                            foucesPointCoordinate = .init(latitude: 0, longitude: 0)
+                        }
                         
                         Image("mainScreen-savePoint-icon")
                             .resizable()
@@ -369,17 +371,20 @@ struct MainScreenView: View {
                     Spacer()
                     
                     VStack {
-                        Image("mainScreen-closePoupAboutPoint-icon")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .padding(.leading, 40)
-                            .padding(.bottom, -10)
-                            .padding(.top, 15)
-                            .onTapGesture {
-                                isNeedToShowPopupWithPoint = false
-                                focusedPointName = "Name of a point"
-                                foucesPointCoordinate = .init(latitude: 0, longitude: 0)
-                            }
+                        VStack {
+                            Image("mainScreen-closePoupAboutPoint-icon")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .padding(.leading, 40)
+                                .padding(.bottom, -10)
+                                .padding(.top, 15)
+                        }
+                        .frame(width: 44, height: 44)
+                        .onTapGesture {
+                            isNeedToShowPopupWithPoint = false
+                            focusedPointName = "Name of a point"
+                            foucesPointCoordinate = .init(latitude: 0, longitude: 0)
+                        }
                         
                         Image("mainScreen-deletePoint-icon")
                             .resizable()

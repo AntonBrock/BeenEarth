@@ -216,6 +216,7 @@ struct ProfileView: View {
                     NavigationLink(destination: WebViewScreen(link: "https://sites.google.com/view/3d-journey-planet/terms-of-use",
                                                               navTitle: "Terms and conditions"),
                                    isActive: $isTermsWebViewActive) {
+                        
                         RoundedRectangle(cornerRadius: 14)
                             .fill(Color(hex: "#EFEFEF"))
                             .frame(height: 46)
@@ -274,7 +275,6 @@ struct ProfileView: View {
                                 isPolicyWebViewActive = true
                             }
                     }
-                    
                 }
                 .padding(.top, 40)
             }
@@ -282,6 +282,7 @@ struct ProfileView: View {
             .padding(.top, 40)
             .padding(.horizontal, 45)
         }
+        .clipped()
         .background(.white)
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
@@ -365,7 +366,10 @@ struct ProfileView: View {
     }
         
     private func saveImageToUserDefaults() {
-        guard let selectedImage = selectedImage else { return }
+        guard let selectedImage = selectedImage else {
+            return
+        }
+        
         if let imageData = selectedImage.pngData() {
             UserDefaults.standard.set(imageData, forKey: "selectedImage")
         }

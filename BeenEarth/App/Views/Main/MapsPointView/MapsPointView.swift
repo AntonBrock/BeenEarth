@@ -153,6 +153,7 @@ struct MapsPointView: View {
             .padding(.top, 40)
             .padding(.horizontal, 45)
         }
+            .clipped()
             .navigationTitle("Map point's")
             .navigationBarItems(trailing: trailingBarButton())
             .navigationBarTitleDisplayMode(.inline)

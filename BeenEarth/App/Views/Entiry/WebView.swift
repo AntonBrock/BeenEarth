@@ -15,7 +15,8 @@ struct WebViewScreen: View {
     var body: some View {
         VStack {
             WebView(url: URL(string: "\(link)")!)
-                .edgesIgnoringSafeArea(.all)
+                .clipped()
+                .edgesIgnoringSafeArea([.bottom, .horizontal])
         }
         .navigationBarTitle("\(navTitle)", displayMode: .inline)
         .navigationBarBackButtonHidden(false)

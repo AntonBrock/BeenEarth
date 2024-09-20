@@ -24,9 +24,8 @@ struct BeenEarthApp: App {
     @State var hidedLaunch: Bool = true //false
     
     var body: some Scene {
-        
         WindowGroup {
-            if !didTapOkButton {
+            if !didTapOkButton && !hasSeenOnboarding {
                 if hidedLaunch {
                     WelcomeBoardView() {
                         didTapOkButton = true
