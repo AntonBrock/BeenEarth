@@ -19,7 +19,7 @@ enum MapStyle {
 
 struct MapPoint: Identifiable {
     let id = UUID()
-    let name: String
+    var name: String
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
 }
@@ -313,16 +313,6 @@ struct MainScreenView: View {
                                     .foregroundStyle(.black)
                                     .font(.system(size: 16, weight: .bold))
                             }
-                            
-                            Button {
-                                isEditingFocusedPointMode.toggle()
-                                isPointTextFieldFocused.toggle()
-                            } label: {
-                                Image("profile_edit_ic")
-                                    .resizable()
-                                    .frame(width: 18, height: 23)
-                            }
-                            
                         }
                         
                         VStack {
@@ -525,7 +515,6 @@ struct MainScreenView: View {
     private func saveToUserDefaults() {
         
         var pointOfArray = [[:]]
-        
         savedCoordinates.forEach { point in
             let point = [
                 "name": point.name,

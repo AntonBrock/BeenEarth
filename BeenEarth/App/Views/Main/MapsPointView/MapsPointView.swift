@@ -16,8 +16,15 @@ struct MapsPointView: View {
     var needDismissProfile: (() -> Void)
     var needToShowPointInTheMap: ((MapPoint) -> Void)
     
+    @FocusState var isTextFieldFocused: Bool
+
     @State var didDismissByButton: Bool = false
     @State var editingModeEnable: Bool = false
+    
+    @State var focusedSavedCoordinateName: String = ""
+    @State var focusedSavedCoordinate: MapPoint = MapPoint(name: "", latitude: 0, longitude: 0)
+    @State var isEditingPointEnable: Bool = false
+    @State private var editingPointId: UUID?
     
     var body: some View {
         ScrollView(.vertical) {
@@ -61,9 +68,59 @@ struct MapsPointView: View {
                                 .frame(height: 46)
                                 .overlay(alignment: .leading) {
                                     HStack(spacing: 10) {
-                                        Text("\(point.name)")
-                                            .foregroundStyle(Color(hex: "#2C85FF"))
-                                            .font(.system(size: 16, weight: .bold))
+                                        if isEditingPointEnable && editingPointId == point.id && editingModeEnable {
+                                            
+                                            VStack {
+                                                TextField("\(focusedSavedCoordinate.name)", text: $focusedSavedCoordinateName, onEditingChanged: { editing in
+                                                    isEditingPointEnable = editing
+                                                }, onCommit: {
+                                                    isEditingPointEnable = false
+                                                    isTextFieldFocused = false
+                                                    
+                                                    if let changedPoint = savedCoordinates.firstIndex(where: { $0.id == focusedSavedCoordinate.id }) {
+                                                        
+                                                        savedCoordinates[changedPoint].name = focusedSavedCoordinateName
+                                                        updateSavedPoints()
+                                                    }
+                                                })
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .foregroundStyle(Color(hex: "#2C85FF"))
+                                                .font(.system(size: 16, weight: .bold))
+                                                .focused($isTextFieldFocused)
+                                                .submitLabel(.done)
+                                                .foregroundColor(Color.blue)
+                                                .toolbar {
+                                                    ToolbarItemGroup(placement: .keyboard) {
+                                                        Spacer()
+                                                        Button("Save") {
+                                                            print("Save button tapped")
+                                                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                                        }
+                                                        .foregroundColor(Color.blue)
+                                                    }
+                                                }
+                                                
+                                                VStack {}
+                                                    .frame(maxWidth: .infinity, maxHeight: 1)
+                                                    .background(.gray)
+                                                    .padding(.top, -2)
+                                            }
+                                            
+                                        } else {
+                                            VStack {
+                                                Text("\(point.name)")
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                                    .foregroundStyle(Color(hex: "#2C85FF"))
+                                                    .font(.system(size: 16, weight: .bold))
+                                                
+                                                if editingModeEnable {
+                                                    VStack {}
+                                                        .frame(maxWidth: .infinity, maxHeight: 1)
+                                                        .background(.gray)
+                                                        .padding(.top, -2)
+                                                }
+                                            }
+                                        }
                                         
                                         Spacer()
                                         
@@ -75,9 +132,17 @@ struct MapsPointView: View {
                                     .padding(.trailing, 9)
                                     .padding(.vertical, 9)
                                     .onTapGesture {
-                                        needToShowPointInTheMap(point)
-                                        dismiss.callAsFunction()
+                                        if editingModeEnable {
+                                            isEditingPointEnable = true
+                                            focusedSavedCoordinate = point
+                                            focusedSavedCoordinateName = point.name
+                                            editingPointId = point.id
+                                        } else {
+                                            needToShowPointInTheMap(point)
+                                            dismiss.callAsFunction()
+                                        }
                                     }
+                                   
                                 }
                         }
                     }
@@ -104,6 +169,8 @@ struct MapsPointView: View {
     
     private func updateSavedPoints() {        
         if !savedCoordinates.isEmpty {
+            
+            var pointOfArray = [[:]]
             savedCoordinates.forEach { coordinate in
                 let point = [
                     "name": coordinate.name,
@@ -111,8 +178,8 @@ struct MapsPointView: View {
                     "longitude": coordinate.longitude
                 ] as [String : Any]
                 
-                UserDefaults.standard.set([point], forKey: "savedCoordinatesWithNames")
-            }
+                pointOfArray.append(point)
+                UserDefaults.standard.set(pointOfArray, forKey: "savedCoordinatesWithNames")            }
         } else {
             UserDefaults.standard.set([], forKey: "savedCoordinatesWithNames")
         }
