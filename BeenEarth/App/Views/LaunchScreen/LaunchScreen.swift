@@ -39,6 +39,8 @@ struct LaunchScreen: View {
         .ignoresSafeArea(.all)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
+            
+            #warning("TODO: Здесь можно задать КОГДА нужно скрывать экран Launch")
             DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                 needToDismissScreen()
             }

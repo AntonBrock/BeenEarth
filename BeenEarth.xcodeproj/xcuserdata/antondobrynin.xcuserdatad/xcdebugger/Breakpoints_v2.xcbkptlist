@@ -46,8 +46,8 @@
             filePath = "BeenEarth/App/Views/Main/MainScreenView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "714"
-            endingLineNumber = "714"
+            startingLineNumber = "786"
+            endingLineNumber = "786"
             landmarkName = "mapView(_:didSelect:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "BeenEarth/App/Views/Main/MainScreenView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "538"
-            endingLineNumber = "538"
+            startingLineNumber = "610"
+            endingLineNumber = "610"
             landmarkName = "saveCoordinate(_:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "BeenEarth/App/Views/Main/MainScreenView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "613"
-            endingLineNumber = "613"
+            startingLineNumber = "685"
+            endingLineNumber = "685"
             landmarkName = "loadCoordinates()"
             landmarkType = "7">
          </BreakpointContent>

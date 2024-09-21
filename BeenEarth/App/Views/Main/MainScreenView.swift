@@ -55,6 +55,8 @@ struct MainScreenView: View {
     @FocusState private var isPointTextFieldFocused: Bool
     @State private var foucesPointCoordinate: CLLocationCoordinate2D = .init(latitude: 0, longitude: 0)
     
+    @State private var isNeedToShowAboutNextVersion: Bool = false
+    
     @State private var savedCoordinates: [MapPoint] = []
         
     var body: some View {
@@ -178,8 +180,9 @@ struct MainScreenView: View {
                                 
                             }
                             .onTapGesture {
-                                print("Попап про будущий функционал")
-                                
+                                withAnimation {
+                                    isNeedToShowAboutNextVersion = true
+                                }
                             }
                         }
                     }
@@ -458,6 +461,75 @@ struct MainScreenView: View {
                 $0
                     .type(.toast)
                     .position(.bottom)
+                    .animation(.spring)
+                    .closeOnTapOutside(true)
+                    .closeOnTap(false)
+            }
+            .popup(isPresented: $isNeedToShowAboutNextVersion) { 
+                ZStack {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea(.all)
+                    
+                    VStack {
+                        VStack {
+                            ZStack {
+                                Image("mainScreen-nextVersion-background")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(maxWidth: 400, maxHeight: 200)
+                                
+                                Image("mainScreen-nextVersionIcon")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 110, height: 110)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 20)
+                        .padding(.horizontal, 10)
+                        
+                        Text("Oops, we'll see it in the next versions!")
+                            .font(.system(size: 26, weight: .regular))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color(hex: "#2C85FF"))
+                            .padding(.horizontal, 20)
+                            .padding(.top, 20)
+                        
+                        Text("Keep an eye on our updates so you don't miss the new smart routes feature in the app.")
+                            .font(.system(size: 14))
+                            .foregroundColor(.black.opacity(0.7))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 3)
+                        
+                        
+                        Button {
+                            isNeedToShowAboutNextVersion = false
+                        } label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(hex: "#1DA0FF"))
+                                
+                                Text("Got it!")
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 120, height: 35)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 25)
+                        .padding(.bottom, 20)
+                    }
+                    .frame(width: 280, height: 438)
+                    .background(.white)
+                    .cornerRadius(20)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } customize: {
+                $0
+                    .type(.default)
+                    .position(.center)
                     .animation(.spring)
                     .closeOnTapOutside(true)
                     .closeOnTap(false)
