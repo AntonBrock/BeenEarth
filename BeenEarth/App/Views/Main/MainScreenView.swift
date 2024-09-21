@@ -167,21 +167,23 @@ struct MainScreenView: View {
                                     }
                             }
                             
-                            VStack {
-                                Circle()
-                                    .fill(.white)
-                                    .frame(width: 50, height: 50)
-                                    .overlay {
-                                        Image("mainScreen-walking")
-                                            .resizable()
-                                            .frame(width: 35, height: 35)
-                                            .background(Color.white)
+                            if !savedCoordinates.isEmpty {
+                                VStack {
+                                    Circle()
+                                        .fill(.white)
+                                        .frame(width: 50, height: 50)
+                                        .overlay {
+                                            Image("mainScreen-walking")
+                                                .resizable()
+                                                .frame(width: 35, height: 35)
+                                                .background(Color.white)
+                                        }
+                                    
+                                }
+                                .onTapGesture {
+                                    withAnimation {
+                                        isNeedToShowAboutNextVersion = true
                                     }
-                                
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    isNeedToShowAboutNextVersion = true
                                 }
                             }
                         }
