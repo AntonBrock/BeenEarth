@@ -56,6 +56,7 @@ struct MainScreenView: View {
     @State private var foucesPointCoordinate: CLLocationCoordinate2D = .init(latitude: 0, longitude: 0)
     
     @State private var isNeedToShowAboutNextVersion: Bool = false
+    @State private var isNeedToShowAboutGoogleMaps: Bool = false
     
     @State private var savedCoordinates: [MapPoint] = []
         
@@ -86,6 +87,38 @@ struct MainScreenView: View {
                                         globalMap.hideAllAnnotations(on: globalMap.mapView, isHidden: true)
                                     }
                                 }
+                            
+                            VStack {
+                                Circle()
+                                    .fill(.white)
+                                    .frame(width: 50, height: 50)
+                                    .overlay {
+                                        Image("mainScreen-3DStreetIcon")
+                                            .resizable()
+                                            .frame(width: 35, height: 35)
+                                            .background(Color.white)
+                                            .opacity(
+                                                foucesPointCoordinate.longitude == 0 && foucesPointCoordinate.latitude == 0
+                                                ? 0.5
+                                                : UIApplication.shared.canOpenURL(URL(string:  "comgooglemaps://?q=\(foucesPointCoordinate.latitude),\(foucesPointCoordinate.longitude)&layer=c)")!)
+                                                ? 1 : 0.5)
+                                    }
+                            }
+                            .frame(width: 50, height: 50)
+                            .onTapGesture {
+                                if foucesPointCoordinate.longitude != 0 && foucesPointCoordinate.latitude != 0 {
+                                    let urlString = "comgooglemaps://?q=\(foucesPointCoordinate.latitude),\(foucesPointCoordinate.longitude)&layer=c"
+                                    
+                                    if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+                                        openGoogleMaps(latitude: foucesPointCoordinate.latitude, longitude: foucesPointCoordinate.longitude)
+                                    } else {
+                                        withAnimation {
+                                            isNeedToShowAboutGoogleMaps = true
+                                        }
+                                    }
+                                }
+                            }
+                           
                         }
                         
                         Spacer()
@@ -536,6 +569,70 @@ struct MainScreenView: View {
                     .closeOnTapOutside(true)
                     .closeOnTap(false)
             }
+            .popup(isPresented: $isNeedToShowAboutGoogleMaps) {
+                ZStack {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea(.all)
+                    
+                    VStack {
+                        VStack {
+                            ZStack {
+                                Image("mainScreen-3DStreetIcon")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 128, height: 128)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 20)
+                        .padding(.horizontal, 10)
+                        
+                        Text("Unfortunately, you do not have Google Maps installed")
+                            .font(.system(size: 26, weight: .regular))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color(hex: "#2C85FF"))
+                            .padding(.horizontal, 20)
+                            .padding(.top, 20)
+                        
+                        Text("Install Google Maps to view the location in “Street View” mode")
+                            .font(.system(size: 14))
+                            .foregroundColor(.black.opacity(0.7))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 3)
+                        
+                        
+                        Button {
+                            isNeedToShowAboutGoogleMaps = false
+                        } label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(hex: "#1DA0FF"))
+                                
+                                Text("Got it!")
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 120, height: 35)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 25)
+                        .padding(.bottom, 20)
+                    }
+                    .frame(width: 280, height: 438)
+                    .background(.white)
+                    .cornerRadius(20)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } customize: {
+                $0
+                    .type(.default)
+                    .position(.center)
+                    .animation(.spring)
+                    .closeOnTapOutside(true)
+                    .closeOnTap(false)
+            }
         }
         .navigationViewStyle(.stack)
         .tint(.black)
@@ -659,7 +756,19 @@ struct MainScreenView: View {
             UserDefaults.standard.set(pointOfArray, forKey: "savedCoordinatesWithNames")
         }
     }
-    
+                                                       
+    func openGoogleMaps(latitude: Double, longitude: Double) {
+        let urlString = "comgooglemaps://?q=\(latitude),\(longitude)&layer=c"
+        
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            withAnimation {
+                isNeedToShowAboutGoogleMaps = true
+            }
+        }
+    }
+                                                       
     private func loadCoordinates() {
         if let savedData = UserDefaults.standard.array(forKey: "savedCoordinatesWithNames") as? [[String: Any]] {
             
@@ -753,7 +862,7 @@ struct GlobeMapView: UIViewRepresentable {
             mapView.addAnnotation(annotation)
         }
     }
-    
+  
     func hideAllAnnotations(on mapView: MKMapView, isHidden: Bool) {
         for annotation in mapView.annotations {
             if let annotationView = mapView.view(for: annotation) {
@@ -811,8 +920,9 @@ struct GlobeMapView: UIViewRepresentable {
                     annotationView?.annotation = annotation
                 }
                 
-                annotationView?.image = UIImage(named: "maps-point-icon")?.resize(to: CGSize(width: 25, height: 25))
                 
+                #warning("TODO: Тут можно поменять размер иконки точки на карте")
+                annotationView?.image = UIImage(named: "maps-point-icon")?.resize(to: CGSize(width: 35, height: 35))
                 return annotationView
             }
             
